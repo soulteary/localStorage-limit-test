@@ -41,8 +41,11 @@
             </p>
 
             <div class="controls">
-                <a class="pure-button pure-button-primary" href="https://github.com/soulteary/localStorage-limit-test/zipball/master" data-lang-en="Download ZIP">下载压缩包</a>
-                <a class="pure-button" href="https://github.com/soulteary/localStorage-limit-test" data-lang-en="View On GitHub">查看源代码</a>
+                <a class="pure-button pure-button-primary"
+                   href="https://github.com/soulteary/localStorage-limit-test/zipball/master"
+                   data-lang-en="Download ZIP">下载压缩包</a>
+                <a class="pure-button" href="https://github.com/soulteary/localStorage-limit-test"
+                   data-lang-en="View On GitHub">查看源代码</a>
             </div>
 
             <h3 data-lang-en="Author">作者</h3>
@@ -60,10 +63,32 @@
 </div>
 
 <script>
-    window.pageReport = function(data){
-        console.log('global', data)
+
+    /**
+     * 外部定义的配置参数
+     * 完整配置参见localStorage.js
+     */
+    window.$LST$ = {
+        "desc": "LocalStorage Test Config",  //不可更改
+        "report": "http://www.localstorage.com/build/collect.php",
+        "admin": "soulteary",
+        "email": "@qq.com",
+        "api": {
+            "user": "pageReport",
+            "server": "serverReport"         //不存在的接口不会被调用
+        }
+    };
+
+    /**
+     * 用于处理数据并展示
+     * @param data
+     * @returns {boolean}
+     */
+    window.pageReport = function (data) {
+        console.log('global', data);
         return false;
-    }
+    };
+
 </script>
 
 <script type="application/javascript" src="i18N.min.js"></script>

@@ -9,14 +9,32 @@
      * @ver:    0.0.1
      * @useage:
      *
-     * --global config:
+     * --global config(all optional):
      *     {
      *          "report": "http://www.localstorage.com/build/collect.php",  //默认反馈的服务器接口地址
-     *          "admin": "soulteary",   //用于展示邮箱用户名
-     *          "email": "@qq.com",     //用于展示服务器邮箱
-     *          "api": "pageReport",    //调用页面全局的api
-     *          "silence": true         //是否静默处理错误
+     *          "admin": "soulteary",           //用于展示邮箱用户名
+     *          "email": "@qq.com",             //用于展示服务器邮箱
+     *          "api": {                        //调用页面全局的api
+     *                  "user":"pageReport",    //自定义的数据展示处理函数
+     *                  "server":"serverReport" //自定义的服务端处理函数
+     *          },
+     *          "silence": true                 //是否静默处理错误
      *     }
+     *
+     *     如果使用`api`，可以在引用脚本的页面声明全局脚本来处理测试返回的数据。
+     *
+     *     <script>
+     *          window.pageReport = function(data){
+     *              console.log('global', data)
+     *              return false;
+     *          }
+     *     </script>
+     *
+     *      如果使用`silence`，那么即使不能连接服务器，也不会提示访问者。
+     *
+     *
+     * --main page config(high priority):
+     *
      *
      *
      */
@@ -26,6 +44,19 @@
      * 保存传递的配置
      */
     var config = cfg;
+
+    /**
+     * 如果页面中存在变量`$LST$`
+     * 则将其配置覆盖默认配置
+     */
+    if (window.$LST$) {
+        cfg = window.$LST$;
+        if (cfg.desc === "LocalStorage Test Config") {
+            for (var _c in cfg) {
+                config[_c] = cfg[_c];
+            }
+        }
+    }
 
     /**
      * 查看浏览器是否支持localStorage
@@ -238,17 +269,26 @@
     function process(params) {
         switch (params.mode) {
             case 'server':
-                var e = encodeURIComponent,
-                    o = new Image();
-                //m=>quota msg
-                //u=>user agent
-                o.src = config.report + '?m=' + e(params.quota) + '&u=' + e(params.ua) + '&__r=' + randomChars(8);
-                o.onload = params.callback.call(this, params.quota);
-                o.onerror = function () {
-                    if (!config.silence) {
-                        alert('Connect Report Server Failed, Please Contact ' + config.admin + config.email);
+
+                //检查定义的全局API是否存在
+                if (config.api && config.api.server && config.api.server in window) {
+                    if (typeof window[config.api.server] === "function") {
+                        window[config.api.server].call(this, params);
                     }
-                };
+                    params.callback.call(this, params.quota);
+                } else {
+                    var e = encodeURIComponent,
+                        o = new Image();
+                    //m=>quota msg
+                    //u=>user agent
+                    o.src = config.report + '?m=' + e(params.quota) + '&u=' + e(params.ua) + '&__r=' + randomChars(8);
+                    o.onload = params.callback.call(this, params.quota);
+                    o.onerror = function () {
+                        if (!config.silence) {
+                            alert('Connect Report Server Failed, Please Contact ' + config.admin + config.email);
+                        }
+                    };
+                }
                 break;
             case 'user':
                 //展示数据
@@ -271,9 +311,9 @@
      */
     function excel(data) {
         //检查定义的全局API是否存在
-        if (config.api && config.api in window) {
-            if (typeof window[config.api] === "function") {
-                return window[config.api].call(this, data);
+        if (config.api && config.api.user && config.api.user in window) {
+            if (typeof window[config.api.user] === "function") {
+                return window[config.api.user].call(this, data);
             }
         }
 
@@ -318,4 +358,4 @@
         //展示给用户采集结果
         return process({'quota': quota, 'ua': ua, 'callback': excel, 'mode': 'user'});
     }
-})({"report": "http://www.localstorage.com/build/collect.php", "admin": "soulteary", "email": "@qq.com", "api": "pageReport", "silence": true});
+})({"report": "http://www.localstorage.com/build/collect.php", "admin": "soulteary", "email": "@qq.com", "api": {"user": "pageReport"}, "silence": true});
