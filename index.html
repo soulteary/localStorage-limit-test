@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>localStorage Limit Test</title>
-    <link rel="stylesheet" href="style.min.css?r=1403376463057"/>
+    <link rel="stylesheet" href="style.min.css?r=1403378462874"/>
 </head>
 <body>
 
@@ -58,13 +58,39 @@
 </div>
 
 <script>
+
+    /**
+     * 外部定义的配置参数
+     * 完整配置参见localStorage.js
+     */
+    window.$LST$ = {
+        "desc":"LocalStorage Test Config",  //不可更改
+        "report": "http://www.localstorage.com/build/collect.php",
+        "admin": "soulteary",
+        "email": "@qq.com",
+        "api": {
+            "user":"pageReport",
+            "server":"serverReport"         //不存在的接口不会被调用
+        }
+    };
+
+    /**
+     * 用于处理数据并展示
+     * @param data
+     * @returns {boolean}
+     */
     window.pageReport = function(data){
         console.log('global', data)
         return false;
     }
+    window.serverReport = function(params){
+        console.log('S');
+        return false;
+    }
+
 </script>
 
 <script type="application/javascript" src="i18N.min.js"></script>
-<script src="index.min.js?r=1403376463057" type="text/javascript"></script>
+<script src="index.min.js?r=1403378462874" type="text/javascript"></script>
 </body>
 </html>
