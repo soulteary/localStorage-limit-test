@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>localStorage Limit Test</title>
+    <!-- build:css -->
+    <link rel="stylesheet" href="/* style file */"/>
+    <!-- endbuild -->
+</head>
+<body>
+
+<div class="content-wrap">
+
+    <a class="pure-button pure-button-primary" href="javascript:lang('zh')">zh</a>
+    <a class="pure-button pure-button-info" href="javascript:lang('en')">en</a>
+
+    <h1 data-lang-en="localStorage Limit Test">localStorage 容量测试脚本</h1>
+
+    <div>
+        <form>
+            <h3 data-lang-en="What's this?">这货是什么</h3>
+
+            <p data-lang-en="We often talk about the LocalStorage, do you know how much it's actually what the maximum is, this example will tell you.">
+                我们常常讨论的localStorage, 你知道它的实际最大值是多少么，这个例子可以告诉你。
+            </p>
+
+            <div class="controls">
+                <a class="pure-button pure-button-primary" href="./?localStorage=on" data-lang-en="Click ME!">戳我!</a>
+            </div>
+
+            <p data-lang-en="The version of browser grew quickly, among different terminals, different systems or different browsers, we'll see different results.">
+                不过浏览器版本更迭很快，不同的终端，不同的系统，不同的浏览器都可能产生不同的结果。
+            </p>
+
+            <p data-lang-en="I'll finish a script on server which is used to collect the statistical test data, for the benefit of everyone.">
+                接下来我会完善一个收集脚本，统计大家的测试数据，最后公开数据，造福大家。
+            </p>
+
+            <p data-lang-en="If you have suggestions or comments, please send pull request to me. Of course, also welcome give me a star.">
+                如果你有建议或者意见，欢迎发pull request给我。当然，也欢迎点赞。
+            </p>
+
+            <div class="controls">
+                <a class="pure-button pure-button-primary" href="https://github.com/soulteary/localStorage-limit-test/zipball/master" data-lang-en="Download ZIP">下载压缩包</a>
+                <a class="pure-button" href="https://github.com/soulteary/localStorage-limit-test" data-lang-en="View On GitHub">查看源代码</a>
+            </div>
+
+            <h3 data-lang-en="Author">作者</h3>
+
+            <p data-lang-en="[soulteary](http://www.soulteary.com)">
+                [苏洋](http://www.soulteary.com)
+            </p>
+
+            <p data-lang-en="Twitter: @soulteary">
+                微博: @soulteary
+            </p>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    window.pageReport = function(data){
+        console.log('global', data)
+        return false;
+    }
+</script>
+
+<script type="application/javascript" src="i18N.min.js"></script>
+<!-- build:js -->
+<script src="/* script file */"></script>
+<!-- endbuild -->
+</body>
+</html>
